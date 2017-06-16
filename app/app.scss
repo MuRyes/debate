@@ -1,0 +1,55 @@
+@charset 'utf-8';
+
+body {
+  background: #EEEEEE;
+  text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'BM DoHyeon';
+  font-weight: normal;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.box {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  width: 70vw;
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  will-change: box-shadow;
+}
+
+.row {
+  width: auto;
+}
+
+.slide-enter-active {
+  transition: all 1s cubic-bezier(.4, 0, 0, 1);
+}
+
+.slide-leave-active {
+  transition: all 1s cubic-bezier(0, 0, .2, 1);
+}
+
+.slide-enter {
+  transform: translateY(500px);
+  opacity: 0;
+}
+
+ .slide-leave-to {
+   transform: translateY(-500px);
+  opacity: 0;
+ }
