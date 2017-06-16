@@ -1,5 +1,5 @@
 {
-  "name": "korean",
+  "name": "book-debate",
   "version": "1.0.0",
   "description": "KDMHS Book debate",
   "main": "src/index.js",
