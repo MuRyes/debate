@@ -14,7 +14,7 @@ export default {
   },
   props: ['index', 'text', 'time'],
   data: () => ({
-    showTimer: false
+    showTimer: true
   }),
   computed: {
     isFocused () {
@@ -34,36 +34,18 @@ export default {
 <style lang='scss' scoped>
   h1 {
     font-size: 4vw;
-    animation-delay: 1s;
+    animation-delay: 2s;
     animation-duration: 2s;
-    animation-name: getting-smaller;
+    animation-name: go-top;
     animation-fill-mode: forwards;
     // TODO mixin
   }
 
-  
-
-  .row {
-    animation-delay: 1s;
-    animation-duration: 2s;
-    animation-name: go-top;
-    animation-fill-mode: forwards;
-  }
 
   @keyframes go-top {
-    from {
-      top: 0;
-    }
-
-    to {
-      transform: translateY(-30vh);
-    }
-  }
-
-  @keyframes getting-smaller {
     to {
       font-size: 2.5vw;
-      transform: translateX(-27vh);
+      transform: translateY(-30vh) translateX(-20vw);
     }
   }
 </style>
