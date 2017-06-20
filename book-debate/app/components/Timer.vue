@@ -9,7 +9,6 @@
 </template>
 <script>
 const hangulMap = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구', '십']
-const filter = (v) => String(v).split('').reduce((pv, cv, index) => index == 1 ? (hangulMap[pv] + (cv == 0 ? '' : '십' + hangulMap[cv])) : hangulMap[cv])
 
 export default {
   props: ['time'],
@@ -17,22 +16,23 @@ export default {
     return {
       minutes: Number(this.time.split(':')[0]),
       seconds: Number(this.time.split(':')[1]),
-      computedMinutes: filter(this.time.split(':')[0]),
-      computedSeconds: filter(this.time.split(':')[1]),
       run: false,
-      resetting: false
+      resetting: false,
+      expired: false
     }
   },
 
-  watch: {
-    minutes () {
-      this.computedMinutes = filter(this.minutes)
+  computed: {
+    computedMinutes () {
+      return this.filter(Number(this.minutes))
     },
-    seconds () {
-      this.computedSeconds =  filter(this.seconds)
+    computedSeconds () {
+      return this.filter(Number(this.seconds))
     }
   },
+
   methods: {
+    filter: (v) => String(v).split('').reduce((pv, cv, index, arr) => (index === 1 ? (pv === '일' ? '' : pv) + ((cv === '0') ? '십' : '십' + hangulMap[cv]) : hangulMap[cv]), 0),
     toggle () {
       this.run = !this.run
       this.start()
@@ -44,19 +44,31 @@ export default {
     reset () {
       clearTimeout(this.callback)
       this.run = false
+      this.expired = false
       this.resetting = true
       this.minutes = Number(this.time.split(':')[0])
       this.seconds = Number(this.time.split(':')[1])
-      // TODO : Vue.set
     },
 
     callback () {
       if(this.resetting)
         return (this.resetting = false)
-      if (this.seconds == 0)
-        this.minutes--, this.seconds = 59;
-      else 
-        this.seconds--
+      if(this.expired) {
+        if(this.seconds == 59) {
+          this.seconds = 0
+          this.minutes++
+          return this.start()
+        }
+        this.seconds++
+        return this.start()
+      }
+      if(this.minutes == 0 && this.seconds == 0)
+        return (this.expired = true, this.seconds = 1, this.start())
+      if(this.seconds == 0) {
+        this.minutes--
+        this.seconds = 59
+      }
+      this.seconds--
       return this.start()
     }
     // TODO 알림 소리
@@ -66,6 +78,6 @@ export default {
 </script>
 <style lang='scss' scoped>
   .timer {
-    position: fixed;
+    position: relative;
   }
 </style>
